@@ -63,7 +63,7 @@ class LightningClassifier(pl.LightningModule):
 
         loss = self.get_loss(torch.flatten(torch.sigmoid(y_preds)), y)
         preds = torch.flatten((y_preds > 0.5).int().cpu())
-        metric = (preds == y.int().cpu()).sum().item()/len(y)
+        metric = (preds == y.int().cpu()).sum().item() / len(y)
         return {'val_loss': loss,
                 'pred_label': (y_preds).cpu(),
                 'val_metric': metric,
@@ -114,3 +114,19 @@ class LightningClassifier(pl.LightningModule):
             **self.hparams['training']['scheduler']['kwargs']
         }
         return [optimizer], [scheduler]
+
+    def test_step(self, batch, batch_idx):
+        x, y = batch
+        with torch.no_grad():
+            y_preds = self.forward(x)
+            y_preds = torch.flatten(torch.sigmoid(y_preds))
+
+        return {'y_preds': (y_preds).cpu(),
+                'y_labels': torch.flatten((y_preds > 0.5).int().cpu())
+                }
+
+    def test_epoch_end(self, outputs):
+        all_pred_label = torch.cat([x['y_labels'] for x in outputs])
+        all_preds = torch.cat([x['y_preds'] for x in outputs])
+        return {'all_pred_label': all_pred_label,
+                'all_preds': all_preds}
