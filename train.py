@@ -59,4 +59,4 @@ if __name__ == '__main__':
         trainer.fit(model, train_dataloader=train_loader, val_dataloaders=valid_loader)
         fold_best_metrics.append(np.max(model.val_metrics))
     print('MEAN METRIC:', np.mean(fold_best_metrics), 'std', np.std(fold_best_metrics))
-    print('All metrics:', fold_best_metrics)
+    print('ALL METRICS:', fold_best_metrics)
