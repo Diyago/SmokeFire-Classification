@@ -1,3 +1,5 @@
+Server ip 89.208.197.195
+
 1. Buiding docker ```docker build --file Dockerfile --tag fastapi-ml .```
 For changing host change ip address in Dockerfile CMD ["main:app", "--host", "0.0.0.0"] to what ever you want
 
