@@ -8,7 +8,7 @@ All metrics: [0.998, 0.77, 0.89, 0.99]
 
 **3. Training data**
 
-31 unique location, only 6 with target 1. 2288 - total annotated images 
+31 unique location, only 7 with target 1. 2288 - total annotated images 
 
 **3. To train model**
 

@@ -1,4 +1,3 @@
-import cv2
 import skimage.io
 from torch.utils.data import Dataset
 
@@ -16,11 +15,7 @@ class TrainDataset(Dataset):
     def __getitem__(self, idx):
         file_name = self.df["image_filename"].values[idx]
         file_path = "{}/{}".format(self.config["images_path"], file_name)
-        image = skimage.io.MultiImage(file_path)
-        image = cv2.resize(
-            image[-1], (self.config["target_width"], self.config["target_width"])
-        )
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = skimage.io.MultiImage(file_path)[-1]
 
         if self.transform:
             augmented = self.transform(image=image)
@@ -32,7 +27,6 @@ class TrainDataset(Dataset):
 
 
 class TestDataset(Dataset):
-    # todo test and rewrite for inference
 
     def __init__(self, df, config, transform=None):
         self.df = df
@@ -45,11 +39,7 @@ class TestDataset(Dataset):
     def __getitem__(self, idx):
         file_name = self.df["image_filename"].values[idx]
         file_path = "{}/{}".format(self.config["images_path"], file_name)
-        image = skimage.io.MultiImage(file_path)
-        image = cv2.resize(
-            image[-1], (self.config["target_width"], self.config["target_width"])
-        )
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        image = skimage.io.MultiImage(file_path)[-1]
 
         if self.transform:
             augmented = self.transform(image=image)

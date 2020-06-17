@@ -57,8 +57,8 @@ if __name__ == "__main__":
     dataset = TestDataset(
         folds[folds['label'] == 'correct'].head(25),
         config["test_inference"]["Dataset"],
-        transform=get_transforms(data="valid"),
-    )
+        transform=get_transforms(data="valid", width=config["test_inference"]["Dataset"]["target_width"],
+                                 height=config["test_inference"]["Dataset"]["target_height"]))
     loader = DataLoader(dataset, **config["test_inference"]["loader"])
     all_models = get_all_models(config["test_inference"]["models_path"])
 
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     model_results["preds"].append(batch_preds / len(all_models))
     model_results['preds'] = np.concatenate(model_results["preds"]).ravel()
     model_results["image_label"] = list((model_results["preds"] > config["test_inference"]["threshold"]
-                                        ).astype(int))
+                                         ).astype(int))
 
     print(model_results)
     # folds = create_folds(config['validation'])
