@@ -1,0 +1,23 @@
+model_params:
+  num_outputs: 1
+  model_name: efficientnet_b2b
+  pretrained: True
+  freeze_bn: False
+  dropout_p: 0.5
+  show_model_summary: False
+
+total_seed: 42
+
+test_inference:
+  models_path: './models/weights'
+  TTA:
+    - null
+  Dataset:
+    images_path: ./
+    target_height: 320
+    target_width: 320
+  loader:
+    batch_size: 1
+    shuffle: False
+    num_workers: 4
+  threshold: 0.5
