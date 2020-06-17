@@ -50,17 +50,17 @@ if __name__ == '__main__':
         os.makedirs('{}/{}'.format(config['logger_path']['lightning_logger'], config['model_params']['model_name']),
                     exist_ok=True)
 
-    checkpoint_callback = ModelCheckpoint(
-        filepath=tb_logger.log_dir + config['training']['ModelCheckpoint']['path'],
-        **config['training']['ModelCheckpoint']['kwargs'])
-    early_stop_callback = EarlyStopping(**config['training']['early_stop_callback'])
+        checkpoint_callback = ModelCheckpoint(
+            filepath=tb_logger.log_dir + config['training']['ModelCheckpoint']['path'],
+            **config['training']['ModelCheckpoint']['kwargs'])
+        early_stop_callback = EarlyStopping(**config['training']['early_stop_callback'])
 
-    model = LightningClassifier(config)
-    trainer = pl.Trainer(logger=tb_logger,
-                         early_stop_callback=early_stop_callback,
-                         checkpoint_callback=checkpoint_callback,
-                         **config['training']['Trainer'])
-    trainer.fit(model, train_dataloader=train_loader, val_dataloaders=valid_loader)
-    fold_best_metrics.append(np.max(model.val_metrics))
+        model = LightningClassifier(config)
+        trainer = pl.Trainer(logger=tb_logger,
+                             early_stop_callback=early_stop_callback,
+                             checkpoint_callback=checkpoint_callback,
+                             **config['training']['Trainer'])
+        trainer.fit(model, train_dataloader=train_loader, val_dataloaders=valid_loader)
+        fold_best_metrics.append(np.max(model.val_metrics))
     print('MEAN METRIC:', np.mean(fold_best_metrics), 'std', np.std(fold_best_metrics))
     print('ALL METRICS:', fold_best_metrics)

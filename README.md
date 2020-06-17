@@ -1,8 +1,8 @@
 **1. Current results**
 
-MEAN METRIC: 0.91 std 0.09
+MEAN METRIC: 0.928 std 0.085
 
-All metrics: [0.998, 0.77, 0.89, 0.99]
+All metrics: [0.999, 0.786, 0.937, 0.99]
 
 ![Cross Val ROC AUC](./lightning_logs/image.png)
 
@@ -20,7 +20,10 @@ All metrics: [0.998, 0.77, 0.89, 0.99]
  
  d. Watch tensorboad logs `tensorboard --logdir ./lightning_logs/`
  
+ e. All inference and deploy param specified in `deploy_model` folder
+ 
+ d. Collect up-to-date requirements.txt call `pipreqs --force`
+ 
  **TODO:**
- * Collect more data
- * Inference
- * Deployment 
+ * Collect more data 
+ 
