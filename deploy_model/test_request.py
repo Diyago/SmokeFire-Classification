@@ -2,7 +2,7 @@ import requests
 import io
 import numpy as np
 from PIL import Image
-url = "http://127.0.0.1:9999/predict_image/"
+url = "http://0.0.0.0:8000/predict_image/"
 
 #fin = open('file_1.log', 'rb')
 fin = open('test_image.png', 'rb')
