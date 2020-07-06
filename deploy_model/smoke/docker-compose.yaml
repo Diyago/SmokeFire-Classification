@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  fastapi-ml:
+    build: .
+    container_name: fastapi-smoke-inference
+    ports:
+      - 8000:8000
+
+networks:
+    default:
+        driver: bridge

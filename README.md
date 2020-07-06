@@ -1,5 +1,7 @@
 **1. Current results**
 
+TTA results increase metrics on test (flip_lr and flip_ud)
+
 #### Fire detections
 
 OOF metrics:
