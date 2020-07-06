@@ -33,8 +33,6 @@ def qwk_metric(y_pred, y, detach=True):
 
 
 def create_folds(configs):
-    if os.path.isfile(configs["folds_path"]):
-        return pd.read_csv(configs["folds_path"])
 
     folds = pd.read_csv(configs["train_csv"])
     train_labels = folds[configs["target_col"]].values

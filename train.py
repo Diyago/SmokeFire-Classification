@@ -62,5 +62,6 @@ if __name__ == '__main__':
                              **config['training']['Trainer'])
         trainer.fit(model, train_dataloader=train_loader, val_dataloaders=valid_loader)
         fold_best_metrics.append(np.max(model.val_metrics))
-    print('MEAN METRIC:', np.mean(fold_best_metrics), 'std', np.std(fold_best_metrics))
-    print('ALL METRICS:', fold_best_metrics)
+        
+    print('MEAN METRIC:', round(np.mean(fold_best_metrics), 3), 'std', round(np.std(fold_best_metrics), 3))
+    print('ALL METRICS:', [round(x, 3) for x in fold_best_metrics])

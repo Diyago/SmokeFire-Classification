@@ -103,12 +103,12 @@ if __name__ == 'main':
                 batch_preds += get_tta_preds(
                     model, pil_image, augment=config["test_inference"]["TTA"]
                 )
-        model_results = {"preds": [], "image_label": {}}
+        model_results = {"preds": [], "image_label": {}, "model_type": config["test_inference"]["model_type"]}
 
         model_results["preds"].append(batch_preds / len(all_models))
         model_results['preds'] = np.concatenate(model_results["preds"]).ravel()
         model_results["image_label"] = (model_results["preds"] > config["test_inference"]["threshold"]
-                                             ).astype(int).tolist()
+                                        ).astype(int).tolist()
         model_results['preds'] = model_results['preds'].tolist()
         logger.info('Results {}'.format(model_results))
 

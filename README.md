@@ -1,14 +1,25 @@
 **1. Current results**
 
-MEAN METRIC: 0.928 std 0.085
-
+#### Fire detections
+ROC AUC: 0.928 std 0.085
 All metrics: [0.999, 0.786, 0.937, 0.99]
+Precision: 0.4
+Recall: 0.8
+
+![Cross Val ROC AUC](./lightning_logs/image.png)
+
+#### Smoke detections
+ROC AUC: 0.928 std 0.085
+All metrics: [0.999, 0.786, 0.937, 0.99]
+Precision: 0.4
+Recall: 0.8
 
 ![Cross Val ROC AUC](./lightning_logs/image.png)
 
 **3. Training data**
 
-31 unique location, only 7 with target 1. 2288 - total annotated images 
+Fire: 31 unique location, only 7 with target 1. 2288 - total annotated images 
+Smoke train: 17 unique location, only 15 with target 1. 2k+ - total annotated images
 
 **3. To train model**
 

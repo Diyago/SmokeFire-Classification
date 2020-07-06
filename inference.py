@@ -3,8 +3,10 @@ import os
 import warnings
 
 import numpy as np
+import pandas as pd
 import torch
 from poyo import parse_string
+from sklearn import metrics
 from torch.utils.data import DataLoader
 
 from common_blocks.datasets import TestDataset
@@ -19,10 +21,9 @@ with codecs.open("config/config_classification.yml", encoding="utf-8") as ymlfil
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
-def get_tta_preds(net, images, augment=["null"], th=0.5):
+def get_tta_preds(net, images, augment=["null"]):
     with torch.no_grad():
         net.eval()
-        # import ipdb; ipdb.set_trace()
         if 1:  # null
             logit = net(images)
             probability = torch.sigmoid(logit)
@@ -55,7 +56,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 if __name__ == "__main__":
     folds = create_folds(config["validation"])
     dataset = TestDataset(
-        folds[folds['label'] == 'correct'].head(25),
+        folds[(folds.fold == 0)],
         config["test_inference"]["Dataset"],
         transform=get_transforms(data="valid", width=config["test_inference"]["Dataset"]["target_width"],
                                  height=config["test_inference"]["Dataset"]["target_height"]))
@@ -64,38 +65,25 @@ if __name__ == "__main__":
 
     model_results = {"preds": [], "image_names": [], "image_label": {}}
     for fnames, images in loader:
-
         images = images.to(device)
+        batch_preds = None
         for model in all_models:
-            batch_preds = None
             if batch_preds is None:
                 batch_preds = get_tta_preds(model, images, augment=config["test_inference"]["TTA"])
             else:
-                batch_preds += get_tta_preds(
-                    model, images, augment=config["test_inference"]["TTA"]
-                )
+                batch_preds += get_tta_preds(model, images, augment=config["test_inference"]["TTA"])
         model_results["image_names"].extend([i for i in fnames])
+        model_results["preds"].append(batch_preds)
 
-    model_results["preds"].append(batch_preds / len(all_models))
-    model_results['preds'] = np.concatenate(model_results["preds"]).ravel()
+    model_results['preds'] = np.concatenate(model_results["preds"]).ravel() / len(all_models)
     model_results["image_label"] = list((model_results["preds"] > config["test_inference"]["threshold"]
                                          ).astype(int))
 
-    print(model_results)
-    # folds = create_folds(config['validation'])
-    # for fold in range(config['validation']['nfolds']):
-    #     trn_idx = folds[folds['fold'] != fold].index
-    #     val_idx = folds[folds['fold'] == fold].index
-    #
-    #     valid_dataset = TrainDataset(folds.loc[val_idx].reset_index(drop=True),
-    #                                  config['Val']['Dataset'],
-    #                                  transform=get_transforms(data='valid'))
-    #     valid_loader = DataLoader(valid_dataset, **config['Val']['loader'])
-    #
-    #     model = LightningClassifier(config)
-    #     checkpoint = torch.load('./lightning_logs/efficientnet_b2b/fold_1/epoch=06-avg_val_metric=0.9976.ckpt',
-    #                             map_location=lambda storage, loc: storage)
-    #     model.load_state_dict(checkpoint['state_dict'])
-    #     trainer = pl.Trainer()
-    #     # todo fix returning results
-    #     results
+    model_results = pd.DataFrame(model_results)
+    model_results['gt_label'] = folds[(folds.fold == 0)].label.reset_index(drop=True)
+    class_to_id = {"correct": 1, "incorrect": 0}
+    model_results['gt_label'] = model_results['gt_label'].map(class_to_id)
+
+    print('ROC AUC', metrics.roc_auc_score(model_results['gt_label'], model_results['preds']))
+    print('Precision', model_results[model_results['image_label'] == 1].gt_label.mean())
+    print('Recall', metrics.recall_score(model_results['gt_label'], model_results['image_label']))

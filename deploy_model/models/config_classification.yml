@@ -9,6 +9,7 @@ model_params:
 total_seed: 42
 
 test_inference:
+  model_type: smoke_detection #fire detection
   models_path: './models/weights'
   TTA:
     - null
