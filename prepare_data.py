@@ -1,9 +1,11 @@
+import codecs
 import os
 
 import pandas as pd
+from poyo import parse_string
 
 
-def prepate_train_csv(path):
+def prepate_train_csv(path, output_file='all_train.csv'):
     dfs = []
     for folder in os.listdir(path):
         if "train.dir" in folder:
@@ -17,10 +19,15 @@ def prepate_train_csv(path):
                     )
                     dfs.append(df)
     dfs = pd.concat(dfs)
-    dfs.to_csv("all_train.csv", index=False)
+    dfs.to_csv(output_file, index=False)
     print('Unique locations', dfs['realative_coordinates'].nunique())
     print('Unique locations with label = correct', dfs[dfs['label'] == 'correct']['realative_coordinates'].nunique())
 
 
+with codecs.open("config/config_classification.yml", encoding="utf-8") as ymlfile:
+    config_yaml = ymlfile.read()
+    config = parse_string(config_yaml)
+
 if __name__ == '__main__':
     prepate_train_csv('./data/smoke_train/')
+    prepate_train_csv('./data/smoke_val/', output_file=config['test_inference']['train_csv'])

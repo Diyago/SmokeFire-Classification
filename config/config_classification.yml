@@ -86,6 +86,10 @@ validation:
 total_seed: 42
 
 test_inference:
+  train_csv: all_test.csv
+  target_col: label
+  nfolds: 2
+  folds_path: ./lightning_logs/folds_test.csv
   models_path: './lightning_logs/models'
   TTA:
     - null
@@ -100,5 +104,3 @@ test_inference:
     shuffle: False
     num_workers: 8
   threshold: 0.15
-#MEAN METRIC: 0.9141008267185096 std 0.10218409700944817
-#All metrics: [0.9897216951296648, 0.740673522887679, 0.938634351482957, 0.9873737373737375]

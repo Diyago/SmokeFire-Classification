@@ -1,20 +1,26 @@
 **1. Current results**
 
 #### Fire detections
-ROC AUC: 0.928 std 0.085
-All metrics: [0.999, 0.786, 0.937, 0.99]
-Precision: 0.4
-Recall: 0.8
+
+OOF metrics:
+* ROC AUC: 0.928 std 0.085
+* All metrics: [0.999, 0.786, 0.937, 0.99]
+
+Test metrics:
+* ROC AUC 0.94
+* Precision: 0.4
+* Recall: 0.8
 
 ![Cross Val ROC AUC](./lightning_logs/image.png)
 
 #### Smoke detections
-ROC AUC: 0.928 std 0.085
-All metrics: [0.999, 0.786, 0.937, 0.99]
-Precision: 0.4
-Recall: 0.8
 
-![Cross Val ROC AUC](./lightning_logs/image.png)
+Test metrics:
+* ROC AUC 0.94
+* Precision 0.1
+* Recall 0.85
+
+![Cross Val ROC AUC](./lightning_logs/smoke.png)
 
 **3. Training data**
 

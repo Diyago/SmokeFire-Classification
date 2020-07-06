@@ -9,7 +9,7 @@ from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks.model_checkpoint import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
 from torch.utils.data import DataLoader
-
+from pytorch_lightning.callbacks import LearningRateLogger
 from common_blocks.datasets import TrainDataset
 from common_blocks.logger import init_logger
 from common_blocks.transforms import get_transforms
@@ -28,6 +28,8 @@ if __name__ == '__main__':
     folds = create_folds(config['validation'])
     fold_best_metrics = []
     for fold in range(config['validation']['nfolds']):
+        if fold in [0, 1, 2]:
+            continue
         trn_idx = folds[folds['fold'] != fold].index
         val_idx = folds[folds['fold'] == fold].index
 
@@ -56,7 +58,9 @@ if __name__ == '__main__':
         early_stop_callback = EarlyStopping(**config['training']['early_stop_callback'])
 
         model = LightningClassifier(config)
+        lr_logger = pl.callbacks.LearningRateLogger()
         trainer = pl.Trainer(logger=tb_logger,
+                             callbacks=[lr_logger],
                              early_stop_callback=early_stop_callback,
                              checkpoint_callback=checkpoint_callback,
                              **config['training']['Trainer'])

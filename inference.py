@@ -39,6 +39,7 @@ def get_tta_preds(net, images, augment=["null"]):
 
 def get_all_models(path):
     all_models = []
+
     for model_path in os.listdir(path):
         model = LightningClassifier(config)
         checkpoint = torch.load(
@@ -54,9 +55,9 @@ def get_all_models(path):
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
-    folds = create_folds(config["validation"])
+    folds = create_folds(config["test_inference"])
     dataset = TestDataset(
-        folds[(folds.fold == 0)],
+        folds,
         config["test_inference"]["Dataset"],
         transform=get_transforms(data="valid", width=config["test_inference"]["Dataset"]["target_width"],
                                  height=config["test_inference"]["Dataset"]["target_height"]))
@@ -80,10 +81,10 @@ if __name__ == "__main__":
                                          ).astype(int))
 
     model_results = pd.DataFrame(model_results)
-    model_results['gt_label'] = folds[(folds.fold == 0)].label.reset_index(drop=True)
+    model_results['gt_label'] = folds.label.reset_index(drop=True)
     class_to_id = {"correct": 1, "incorrect": 0}
     model_results['gt_label'] = model_results['gt_label'].map(class_to_id)
 
-    print('ROC AUC', metrics.roc_auc_score(model_results['gt_label'], model_results['preds']))
-    print('Precision', model_results[model_results['image_label'] == 1].gt_label.mean())
-    print('Recall', metrics.recall_score(model_results['gt_label'], model_results['image_label']))
+    print('ROC AUC', round(metrics.roc_auc_score(model_results['gt_label'], model_results['preds']), 3))
+    print('Precision', round(model_results[model_results['image_label'] == 1].gt_label.mean(), 3))
+    print('Recall', round(metrics.recall_score(model_results['gt_label'], model_results['image_label']), 3))
