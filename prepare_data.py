@@ -24,10 +24,18 @@ def prepate_train_csv(path, output_file='all_train.csv'):
     print('Unique locations with label = correct', dfs[dfs['label'] == 'correct']['realative_coordinates'].nunique())
 
 
-with codecs.open("config/config_classification.yml", encoding="utf-8") as ymlfile:
-    config_yaml = ymlfile.read()
-    config = parse_string(config_yaml)
+
 
 if __name__ == '__main__':
-    prepate_train_csv('./data/smoke_train/')
-    prepate_train_csv('./data/smoke_val/', output_file=config['test_inference']['train_csv'])
+    # swith codecs.open("config/config_classification_smoke.yml", encoding="utf-8") as ymlfile:
+    #     config_yaml = ymlfile.read()
+    #     config = parse_string(config_yaml)
+    # prepate_train_csv('./data/smoke_train/')
+    # prepate_train_csv('./data/smoke_val/', output_file=config['test_inference']['train_csv'])
+
+
+    with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
+        config_yaml = ymlfile.read()
+        config = parse_string(config_yaml)
+    prepate_train_csv('./data/fire_train/')
+    prepate_train_csv('./data/fire_val/', output_file=config['test_inference']['train_csv'])

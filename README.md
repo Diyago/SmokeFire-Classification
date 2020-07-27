@@ -5,15 +5,16 @@ TTA results increase metrics on test (flip_lr and flip_ud)
 #### Fire detections
 
 OOF metrics:
-* ROC AUC: 0.928 std 0.085
-* All metrics: [0.999, 0.786, 0.937, 0.99]
+* MEAN METRIC: 0.953 std 0.051
+* ALL METRICS: [0.999, 0.976, 0.868, 0.97]
 
 Test metrics:
-* ROC AUC 0.94
-* Precision: 0.4
-* Recall: 0.8
+* ROC AUC 0.947
+* Precision 0.816
+* Recall 0.74
 
 ![Cross Val ROC AUC](./lightning_logs/image.png)
+![Precision_recall_th_smoke](./lightning_logs/precision_recall_th_fire.png)
 
 #### Smoke detections
 
@@ -23,6 +24,7 @@ Test metrics:
 * Recall 0.85
 
 ![Cross Val ROC AUC](./lightning_logs/smoke.png)
+![Precision_recall_th_smoke](./lightning_logs/precision_recall_th_smoke.png)
 
 **3. Training data**
 

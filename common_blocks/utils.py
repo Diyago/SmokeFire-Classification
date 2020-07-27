@@ -6,6 +6,7 @@ import random
 from functools import partial
 from typing import Any
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import torch
@@ -143,3 +144,10 @@ def load_obj(obj_path: str, default_obj_path: str = "") -> Any:
     if not hasattr(module_obj, obj_name):
         raise AttributeError(f"Object `{obj_name}` cannot be loaded from `{obj_path}`.")
     return getattr(module_obj, obj_name)
+
+def plot_prec_recall_vs_tresh(precisions, recalls, thresholds):
+    plt.plot(thresholds, precisions[:-1], 'b--', label='precision')
+    plt.plot(thresholds, recalls[:-1], 'g--', label='recall')
+    plt.xlabel('Threshold')
+    plt.legend(loc='upper left')
+    plt.ylim([0, 1])

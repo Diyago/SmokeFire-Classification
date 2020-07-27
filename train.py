@@ -16,7 +16,7 @@ from common_blocks.transforms import get_transforms
 from common_blocks.utils import seed_torch, create_folds
 from models.lightningclassifier import LightningClassifier
 
-with codecs.open("config/config_classification.yml", encoding="utf-8") as ymlfile:
+with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
     config_yaml = ymlfile.read()
     config = parse_string(config_yaml)
 
@@ -28,8 +28,6 @@ if __name__ == '__main__':
     folds = create_folds(config['validation'])
     fold_best_metrics = []
     for fold in range(config['validation']['nfolds']):
-        if fold in [0, 1, 2]:
-            continue
         trn_idx = folds[folds['fold'] != fold].index
         val_idx = folds[folds['fold'] == fold].index
 

@@ -5,6 +5,7 @@ import warnings
 import numpy as np
 import pandas as pd
 import torch
+import matplotlib.pyplot as plt
 from poyo import parse_string
 from sklearn import metrics
 from torch.utils.data import DataLoader
@@ -12,9 +13,10 @@ from torch.utils.data import DataLoader
 from common_blocks.datasets import TestDataset
 from common_blocks.transforms import get_transforms
 from common_blocks.utils import create_folds
+from common_blocks.utils import plot_prec_recall_vs_tresh
 from models.lightningclassifier import LightningClassifier
 
-with codecs.open("config/config_classification.yml", encoding="utf-8") as ymlfile:
+with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
     config_yaml = ymlfile.read()
     config = parse_string(config_yaml)
 
@@ -88,3 +90,8 @@ if __name__ == "__main__":
     print('ROC AUC', round(metrics.roc_auc_score(model_results['gt_label'], model_results['preds']), 3))
     print('Precision', round(model_results[model_results['image_label'] == 1].gt_label.mean(), 3))
     print('Recall', round(metrics.recall_score(model_results['gt_label'], model_results['image_label']), 3))
+
+    prec, rec, tre = metrics.precision_recall_curve(model_results['gt_label'], model_results['preds'])
+
+    plot_prec_recall_vs_tresh(prec, rec, tre)
+    plt.show()
