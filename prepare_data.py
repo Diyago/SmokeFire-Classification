@@ -27,15 +27,15 @@ def prepate_train_csv(path, output_file='all_train.csv'):
 
 
 if __name__ == '__main__':
-    # swith codecs.open("config/config_classification_smoke.yml", encoding="utf-8") as ymlfile:
-    #     config_yaml = ymlfile.read()
-    #     config = parse_string(config_yaml)
-    # prepate_train_csv('./data/smoke_train/')
-    # prepate_train_csv('./data/smoke_val/', output_file=config['test_inference']['train_csv'])
-
-
-    with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
+    with codecs.open("config/config_classification_smoke.yml", encoding="utf-8") as ymlfile:
         config_yaml = ymlfile.read()
         config = parse_string(config_yaml)
-    prepate_train_csv('./data/fire_train/')
-    prepate_train_csv('./data/fire_val/', output_file=config['test_inference']['train_csv'])
+    prepate_train_csv('./data/smoke_train/')
+    prepate_train_csv('./data/smoke_val/', output_file=config['test_inference']['train_csv'])
+
+
+    # with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
+    #     config_yaml = ymlfile.read()
+    #     config = parse_string(config_yaml)
+    # prepate_train_csv('./data/fire_train/')
+    # prepate_train_csv('./data/fire_val/', output_file=config['test_inference']['train_csv'])

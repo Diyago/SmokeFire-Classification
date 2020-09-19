@@ -18,10 +18,31 @@ Test metrics:
 
 #### Smoke detections
 
-Test metrics:
-* ROC AUC 0.94
-* Precision 0.1
-* Recall 0.85
+**Before new data**
+
+ROC AUC 0.863
+Precision 0.214
+Recall 0.581
+F1_score 0.312
+
+**original pipeline**
+
+MEAN METRIC: 0.825 std 0.072
+ALL METRICS: [0.8, 0.946, 0.759, 0.796]
+
+ROC AUC 0.884
+Precision 0.2
+Recall 0.744
+F1_score 0.315
+MAP 0.256
+
+**focal loss, MAP as early stopping**
+ 
+ROC AUC 0.886
+Precision 0.161
+Recall 0.953
+F1_score 0.275
+MAP 0.267
 
 ![Cross Val ROC AUC](./lightning_logs/smoke.png)
 ![Precision_recall_th_smoke](./lightning_logs/precision_recall_th_smoke.png)

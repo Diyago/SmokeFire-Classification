@@ -34,13 +34,13 @@ def qwk_metric(y_pred, y, detach=True):
 
 
 def create_folds(configs):
-
     folds = pd.read_csv(configs["train_csv"])
+    folds = folds[folds[configs["target_col"]].isin(["correct", "incorrect"])].reset_index(drop=True)
     train_labels = folds[configs["target_col"]].values
     kf = GroupKFold(n_splits=configs["nfolds"])
 
     for fold, (train_index, val_index) in enumerate(
-        kf.split(folds.values, train_labels, folds["realative_coordinates"])
+            kf.split(folds.values, train_labels, folds["realative_coordinates"])
     ):
         folds.loc[val_index, "fold"] = int(fold)
     folds["fold"] = folds["fold"].astype(int)
@@ -144,6 +144,7 @@ def load_obj(obj_path: str, default_obj_path: str = "") -> Any:
     if not hasattr(module_obj, obj_name):
         raise AttributeError(f"Object `{obj_name}` cannot be loaded from `{obj_path}`.")
     return getattr(module_obj, obj_name)
+
 
 def plot_prec_recall_vs_tresh(precisions, recalls, thresholds):
     plt.plot(thresholds, precisions[:-1], 'b--', label='precision')

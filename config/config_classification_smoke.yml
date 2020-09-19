@@ -33,14 +33,14 @@ model_params:
 
 training:
   batch_size: 16
-  loss: BCELoss
+  loss: FocalLoss #LabelSmoothingCrossEntropyBCE #BCELoss
   warmup_steps: 300
   optimizer:
     name: Adam
     kwargs:
       lr: 1e-4
   early_stop_callback:
-    monitor: avg_val_metric
+    monitor: acc_metric
     mode: max
     patience: 4
     verbose: True

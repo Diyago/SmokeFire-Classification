@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from poyo import parse_string
 from sklearn import metrics
 from torch.utils.data import DataLoader
-
+from tqdm import tqdm
 from common_blocks.datasets import TestDataset
 from common_blocks.transforms import get_transforms
 from common_blocks.utils import create_folds
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     all_models = get_all_models(config["test_inference"]["models_path"])
 
     model_results = {"preds": [], "image_names": [], "image_label": {}}
-    for fnames, images in loader:
+    for fnames, images in tqdm(loader):
         images = images.to(device)
         batch_preds = None
         for model in all_models:
@@ -86,10 +86,12 @@ if __name__ == "__main__":
     model_results['gt_label'] = folds.label.reset_index(drop=True)
     class_to_id = {"correct": 1, "incorrect": 0}
     model_results['gt_label'] = model_results['gt_label'].map(class_to_id)
-
+    model_results.to_csv('./lightning_logs/model_preds.csv', index=False)
     print('ROC AUC', round(metrics.roc_auc_score(model_results['gt_label'], model_results['preds']), 3))
     print('Precision', round(model_results[model_results['image_label'] == 1].gt_label.mean(), 3))
     print('Recall', round(metrics.recall_score(model_results['gt_label'], model_results['image_label']), 3))
+    print('F1_score', round(metrics.f1_score(model_results['gt_label'], model_results['image_label']), 3))
+    print('MAP', round(metrics.average_precision_score(model_results['gt_label'], model_results['preds']), 3))
 
     prec, rec, tre = metrics.precision_recall_curve(model_results['gt_label'], model_results['preds'])
 
