@@ -36,7 +36,7 @@ class LightningClassifier(pl.LightningModule):
         else:
             raise NotImplementedError("This loss {} isn't implemented".format(self.hparams['training']['loss']))
 
-    def training_step_original(self, train_batch, batch_idx):
+    def training_step(self, train_batch, batch_idx):
         x, y = train_batch
         y_preds = self.forward(x)
         loss = self.get_loss(torch.flatten(torch.sigmoid(y_preds)), y)
@@ -48,7 +48,7 @@ class LightningClassifier(pl.LightningModule):
         progress_bar = {'train_metric': metric}
         return {'loss': loss, 'metric': metric, 'log': logs, "progress_bar": progress_bar}
 
-    def training_step(self, train_batch, batch_idx):
+    def training_step_mixup(self, train_batch, batch_idx):
         x, y = train_batch
         x, targets_a, targets_b, lam = mixup_data(x, y, alpha=1)
         x, targets_a, targets_b = map(Variable, (x, targets_a, targets_b))
@@ -93,14 +93,14 @@ class LightningClassifier(pl.LightningModule):
         all_pred_label = torch.cat([x['pred_label'] for x in outputs])
         all_label = torch.cat([x['label'] for x in outputs])
         try:
-            roc_auc_avg_metric = average_precision_score(y_score=all_pred_label, y_true=all_label)
+            avg_metric = average_precision_score(y_score=all_pred_label, y_true=all_label)
         except ValueError:
-            roc_auc_avg_metric = 0.5
-        print('validation_epoch_end', roc_auc_avg_metric)
-        self.val_metrics.append(roc_auc_avg_metric)
+            avg_metric = 0.5
+        print('validation_epoch_end', avg_metric)
+        self.val_metrics.append(avg_metric)
         tensorboard_logs = {'val_loss': avg_loss, 'acc_metric': avg_metric,
-                            'average_precision_score': roc_auc_avg_metric}
-        return {'avg_val_loss': avg_loss, 'avg_val_metric': roc_auc_avg_metric, 'log': tensorboard_logs,
+                            'average_precision_score': avg_metric}
+        return {'avg_val_loss': avg_loss, 'avg_val_metric': avg_metric, 'log': tensorboard_logs,
                 "progress_bar": tensorboard_logs}
 
     def optimizer_step(self, epoch, batch_idx, optimizer, optimizer_idx, second_order_closure):

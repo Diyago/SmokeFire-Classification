@@ -18,31 +18,22 @@ Test metrics:
 
 #### Smoke detections
 
-**Before new data**
+TRAIN:
 
-ROC AUC 0.863
-Precision 0.214
-Recall 0.581
-F1_score 0.312
+* ROC AUC 0.996
+* Precision 0.937
+* Recall 0.975
+* F1_score 0.956
+* MAP 0.997
 
-**original pipeline**
 
-MEAN METRIC: 0.825 std 0.072
-ALL METRICS: [0.8, 0.946, 0.759, 0.796]
+* TEST:
+* ROC AUC 0.829
+* Precision 0.471
+* Recall 1.0
+* F1_score 0.64
+* MAP 0.833
 
-ROC AUC 0.884
-Precision 0.2
-Recall 0.744
-F1_score 0.315
-MAP 0.256
-
-**focal loss, MAP as early stopping**
- 
-ROC AUC 0.886
-Precision 0.161
-Recall 0.953
-F1_score 0.275
-MAP 0.267
 
 ![Cross Val ROC AUC](./lightning_logs/smoke.png)
 ![Precision_recall_th_smoke](./lightning_logs/precision_recall_th_smoke.png)
@@ -50,7 +41,8 @@ MAP 0.267
 **3. Training data**
 
 Fire: 31 unique location, only 7 with target 1. 2288 - total annotated images 
-Smoke train: 17 unique location, only 15 with target 1. 2k+ - total annotated images
+Smoke train: 4 location 118 correct 54 incorrect
+Smoke val: 2 location 33 correct, 18 incorect
 
 **3. To train model**
 

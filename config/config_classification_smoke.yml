@@ -33,7 +33,7 @@ model_params:
 
 training:
   batch_size: 16
-  loss: FocalLoss #LabelSmoothingCrossEntropyBCE #BCELoss
+  loss: FocalLoss #LabelSmoothingCrossEntropyBCE #BCELoss FocalLoss
   warmup_steps: 300
   optimizer:
     name: Adam
@@ -86,10 +86,10 @@ validation:
 total_seed: 42
 
 test_inference:
-  train_csv: all_test.csv
+  train_csv: all_train.csv
   target_col: label
   nfolds: 2
-  folds_path: ./lightning_logs/folds_test.csv
+  folds_path: ./lightning_logs/all_train.csv
   models_path: './lightning_logs/models'
   TTA:
     - null
@@ -103,4 +103,4 @@ test_inference:
     batch_size: 16
     shuffle: False
     num_workers: 8
-  threshold: 0.15
+  threshold: 0.485

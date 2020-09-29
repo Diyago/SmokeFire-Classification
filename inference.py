@@ -16,7 +16,7 @@ from common_blocks.utils import create_folds
 from common_blocks.utils import plot_prec_recall_vs_tresh
 from models.lightningclassifier import LightningClassifier
 
-with codecs.open("config/config_classification_fire.yml", encoding="utf-8") as ymlfile:
+with codecs.open("config/config_classification_smoke.yml", encoding="utf-8") as ymlfile:
     config_yaml = ymlfile.read()
     config = parse_string(config_yaml)
 
