@@ -12,7 +12,7 @@ poyo==0.5.0
 requests==2.23.0
 pytorch_lightning==0.7.6
 fastapi==0.58.0
-Pillow==7.1.2
+Pillow==9.3.0
 scikit_learn==0.23.1
 python-multipart==0.0.5
 uvicorn==0.11.5
