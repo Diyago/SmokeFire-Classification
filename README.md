@@ -52,10 +52,9 @@ Smoke val: 2 location 33 correct, 18 incorect
  
  c. train models run ``train.py``
  
- d. Watch tensorboad logs `tensorboard --logdir ./lightning_logs/`
+ d. Watch TensorBoard logs `tensorboard --logdir ./lightning_logs/`
  
  e. All inference and deploy param specified in `deploy_model` folder
  
  d. Collect up-to-date requirements.txt call `pipreqs --force`
-
  
