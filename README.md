@@ -57,7 +57,5 @@ Smoke val: 2 location 33 correct, 18 incorect
  e. All inference and deploy param specified in `deploy_model` folder
  
  d. Collect up-to-date requirements.txt call `pipreqs --force`
- 
- **TODO:**
- * Collect more data 
+
  
